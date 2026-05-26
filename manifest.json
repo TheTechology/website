@@ -1,0 +1,44 @@
+{
+  "name": "ADN Cars · Mașini premium",
+  "short_name": "ADN Cars",
+  "description": "Mașini premium importate din Germania, verificate punct cu punct. Showroom Cluj-Napoca.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a0907",
+  "background_color": "#0a0907",
+  "lang": "ro-RO",
+  "categories": ["business", "shopping", "automotive"],
+  "icons": [
+    {
+      "src": "favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Stoc mașini",
+      "url": "/#/stoc",
+      "description": "Vezi toate mașinile disponibile"
+    },
+    {
+      "name": "Programare test drive",
+      "url": "/#/programare",
+      "description": "Programează o discuție cu un consultant"
+    },
+    {
+      "name": "Contact",
+      "url": "/#/contact",
+      "description": "Contactează-ne"
+    }
+  ]
+}

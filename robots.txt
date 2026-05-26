@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+# Block crawl of admin assets
+Disallow: /admin.jsx
+Disallow: /config.js
+
+# Sitemap location
+Sitemap: https://adncars.ro/sitemap.xml
+
+# Block specific bots (optional, uncomment if needed)
+# User-agent: GPTBot
+# Disallow: /
+# User-agent: CCBot
+# Disallow: /
