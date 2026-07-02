@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADN Cars · Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="design-tokens.css?v=20260620" />
+  <link rel="stylesheet" href="styles.css?v=20260617d" />
+  <style>
+    /* ── Admin page shell ─────────────────────────────────────── */
+    html, body { height: 100%; margin: 0; }
+    #admin-root { height: 100%; }
+    /* Role badge in login card */
+    .role-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-family: var(--font-mono, monospace);
+      letter-spacing: 0.02em;
+      background: var(--surface-2, rgba(255,255,255,0.06));
+      border: 1px solid var(--border, rgba(255,255,255,0.1));
+      color: var(--fg-muted);
+    }
+    .role-badge .rb-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .role-badge.rb-admin .rb-dot { background: var(--accent, #23717a); }
+    .role-badge.rb-agent .rb-dot { background: var(--fg-faint, #555); }
+  </style>
+</head>
+<body>
+  <div id="admin-root"></div>
+
+  <!-- React 18 -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <!-- ADN Cars scripts — order matters -->
+  <script src="config.js?v=20260620"></script>
+  <script src="data.js?v=20260620"></script>
+  <script src="i18n.js?v=20260620"></script>
+  <script src="icons.js?v=20260620"></script>
+  <script src="components.js?v=20260617d"></script>
+  <script src="admin.js?v=20260624"></script>
+
+  <script>
+  (function () {
+    'use strict';
+    const { useState, useEffect, useRef, useCallback, createElement: h, Fragment } = React;
+
+    /* ── Restore saved tweaks (theme + accent) from main site ── */
+    (function applyTweaks() {
+      try {
+        const PALETTES = {
+          '#23717a': { ink: '#ffffff',  soft: 'rgba(35,113,122,0.14)',  glow: 'rgba(35,113,122,0.32)'  },
+          '#b87333': { ink: '#160a02',  soft: 'rgba(184,115,51,0.14)',  glow: 'rgba(184,115,51,0.32)'  },
+          '#c0c4cc': { ink: '#0d0f12',  soft: 'rgba(192,196,204,0.14)', glow: 'rgba(192,196,204,0.32)' },
+          '#8b2a3a': { ink: '#fff5f0',  soft: 'rgba(139,42,58,0.18)',   glow: 'rgba(139,42,58,0.40)'   }
+        };
+        const saved = JSON.parse(localStorage.getItem('adn-tweaks') || '{}');
+        if (saved.theme) document.documentElement.dataset.theme = saved.theme;
+        if (saved.accent) {
+          const r = document.documentElement.style;
+          r.setProperty('--accent', saved.accent);
+          const p = PALETTES[saved.accent];
+          if (p) {
+            r.setProperty('--accent-ink', p.ink);
+            r.setProperty('--accent-soft', p.soft);
+            r.setProperty('--accent-glow', p.glow);
+          }
+        }
+      } catch (_) {}
+    })();
+
+    /* ── Translate object (RO primary) ─────────────────────── */
+    const t = (window.I18N && window.I18N.ro) ? window.I18N.ro : { admin: {}, nav: {}, cta: {} };
+
+    /* ── Enrich raw inventory with admin fields ─────────────── */
+    function enrichCar(c, i) {
+      return Object.assign({
+        status:         i < 9 ? 'published' : i === 9 ? 'sold' : 'draft',
+        views:          240 + i * 87 + (i % 3) * 51,
+        visibility:     'public',
+        adnScore:       95 + (i % 6),
+        warrantyMonths: 12,
+        vin:            'WBA' + String(i + 100000).padStart(7, '0') + 'DG' + String(100 + i * 7),
+        stockCode:      'ADN-' + (2400 + i),
+        shortDesc:      c.brand + ' ' + c.model + ' ' + (c.variant || '') + ' adusă recent din Germania, stare impecabilă.',
+        internalNotes:  '',
+        photos:         c.photos || [],
+        videoUrl:       '',
+        equipment:      c.equipment || { confort: [], tech: [], siguranta: [] },
+        historyTimeline: c.historyTimeline || []
+      }, c);
+    }
+
+    /* ── Server sync helpers ─────────────────────────────────── */
+    // Trimite inventarul pe server (fără a bloca UI-ul); raportează eșecul prin onError.
+    function syncInventoryToServer(cars, onError) {
+      fetch('/api/inventory.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cars)
+      }).then(function (r) {
+        if (!r.ok && onError) onError('stoc', r.status);
+      }).catch(function () {
+        if (onError) onError('stoc', 0);
+      });
+    }
+
+    // Trimite echipa pe server; raportează eșecul prin onError.
+    function syncTeamToServer(team, onError) {
+      fetch('/api/team.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(team)
+      }).then(function (r) {
+        if (!r.ok && onError) onError('echipă', r.status);
+      }).catch(function () {
+        if (onError) onError('echipă', 0);
+      });
+    }
+
+    /* ── Root component ─────────────────────────────────────── */
+    function AdminApp() {
+      /* Cars state — inițializat din localStorage, apoi sincronizat cu serverul */
+      const [cars, setCars] = useState(function () {
+        try {
+          const raw = localStorage.getItem('adn-cars-inventory');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length) return parsed;
+          }
+        } catch (_) {}
+        return (window.INVENTORY || []).map(enrichCar);
+      });
+
+      const prevCarsRef = useRef(null);
+
+      /* Toast notifications */
+      const [toast, setToast] = useState({ msg: '', show: false });
+      const showToast = useCallback(function (msg) {
+        setToast({ msg: msg, show: true });
+        setTimeout(function () { setToast(function (p) { return { msg: p.msg, show: false }; }); }, 2800);
+      }, []);
+
+      const onSyncError = useCallback(function (what, status) {
+        const reason = status === 401 || status === 403
+          ? 'sesiune expirată — re-autentifică-te'
+          : status === 0
+            ? 'server inaccesibil (verifică găzduirea — necesită PHP)'
+            : 'eroare server ' + status;
+        showToast('Nu s-a salvat pe server (' + what + '): ' + reason);
+      }, [showToast]);
+
+      /* La fiecare schimbare de inventar:
+         1) salvează în localStorage (instant, offline-first)
+         2) trimite pe server (async, pentru persistență multi-user) */
+      useEffect(function () {
+        try { localStorage.setItem('adn-cars-inventory', JSON.stringify(cars)); } catch (_) {}
+        // Evită sync inutil la mount
+        if (prevCarsRef.current !== null) {
+          syncInventoryToServer(cars, onSyncError);
+        }
+        prevCarsRef.current = cars;
+      }, [cars]);
+
+      /* La mount: preia datele de pe server (mai recente decât localStorage) */
+      useEffect(function () {
+        fetch('/api/inventory.php', { credentials: 'include' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (Array.isArray(data) && data.length > 0) {
+              setCars(data);
+              try { localStorage.setItem('adn-cars-inventory', JSON.stringify(data)); } catch (_) {}
+            }
+          })
+          .catch(function () {}); // server indisponibil → folosim localStorage
+      }, []);
+
+      /* Team state — inițializat din localStorage, apoi sincronizat cu serverul
+         (aceeași strategie ca la inventar, nu mai depinde de polling). */
+      const [team, setTeam] = useState(function () {
+        try {
+          const raw = localStorage.getItem('adn-admin-team');
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed) && parsed.length) return parsed;
+          }
+        } catch (_) {}
+        return null; // null → admin.js folosește fallback-ul propriu (window.TEAM)
+      });
+
+      const prevTeamRef = useRef(null);
+      useEffect(function () {
+        if (team === null) return;
+        try { localStorage.setItem('adn-admin-team', JSON.stringify(team)); } catch (_) {}
+        if (prevTeamRef.current !== null) {
+          syncTeamToServer(team, onSyncError);
+        }
+        prevTeamRef.current = team;
+      }, [team]);
+
+      useEffect(function () {
+        fetch('/api/team.php', { credentials: 'include' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (Array.isArray(data) && data.length > 0) {
+              setTeam(data);
+              try { localStorage.setItem('adn-admin-team', JSON.stringify(data)); } catch (_) {}
+            }
+          })
+          .catch(function () {}); // server indisponibil → folosim localStorage / fallback
+      }, []);
+
+      /* Parse initial sub-route from hash */
+      const subRoute = (function () {
+        const h = window.location.hash.replace(/^#\/?/, '');
+        if (h.startsWith('admin/')) return h.slice(6) || 'dashboard';
+        return 'dashboard';
+      })();
+
+      return h(Fragment, null,
+        h(window.AdminPage, {
+          t: t,
+          showToast: showToast,
+          subRoute: subRoute,
+          cars: cars,
+          setCars: setCars,
+          team: team,
+          setTeam: team !== null ? setTeam : undefined
+        }),
+        h(window.Toast, { message: toast.msg, show: toast.show })
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('admin-root'))
+      .render(h(AdminApp));
+  })();
+  </script>
+</body>
+</html>

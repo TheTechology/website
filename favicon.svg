@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- dark background -->
+  <rect width="32" height="32" rx="7" fill="#0d0b09"/>
+  <!-- "ADN" bold, teal -->
+  <text x="16" y="14.5"
+    text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif"
+    font-weight="700"
+    font-size="11.5"
+    letter-spacing="1"
+    fill="#23717a">ADN</text>
+  <!-- thin separator line -->
+  <line x1="7" y1="18" x2="25" y2="18" stroke="#23717a" stroke-width="0.9" stroke-linecap="round" opacity="0.55"/>
+  <!-- "CARS" smaller, white-muted -->
+  <text x="16" y="26"
+    text-anchor="middle"
+    font-family="Georgia,'Times New Roman',serif"
+    font-weight="400"
+    font-size="7"
+    letter-spacing="2.5"
+    fill="#c8b89a"
+    opacity="0.85">CARS</text>
+</svg>

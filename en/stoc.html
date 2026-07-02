@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADN Cars · Cars from Germany</title>
+  <meta name="description" content="Premium used cars sourced to order from Germany. BMW, Audi, Mercedes-Benz, Porsche — inspected in 145 points, 12-month warranty included." />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="stylesheet" href="../design-tokens.css?v=20260620" />
+  <link rel="stylesheet" href="../styles.css?v=20260617d" />
+</head>
+<body>
+  <div id="nav-root"></div>
+
+  <div class="shell" data-screen-label="/stoc">
+    <main>
+      <section class="page stoc-page" style="padding-top:32px;padding-bottom:80px">
+
+        <div class="reveal">
+          <div class="section-head" style="margin-bottom:24px">
+            <div>
+              <span class="mono-eyebrow">Cars</span>
+              <h2>Cars sourced to order from Germany.</h2>
+            </div>
+            <p class="lead">Every car inspected in 145 points, every car with a warranty included. Sourced directly from Germany — not held in physical stock in Romania.</p>
+          </div>
+        </div>
+
+        <!-- Trust stats -->
+        <div class="about-stats reveal" style="padding:32px 0;margin-bottom:28px">
+          <div class="as-card"><div class="as-val" id="stoc-stat-count">–</div><div class="as-label">cars available now</div></div>
+          <div class="as-card"><div class="as-val">145</div><div class="as-label">checkpoints inspected per car</div></div>
+          <div class="as-card"><div class="as-val">10</div><div class="as-label">working days, average delivery</div></div>
+          <a class="as-card" href="leasing.html" style="text-decoration:none;border-radius:14px;transition:background 160ms var(--ease-out)" onmouseover="this.style.background='var(--bg-panel)'" onmouseout="this.style.background='transparent'">
+            <div class="as-val" style="color:var(--accent)">30%</div>
+            <div class="as-label">minimum deposit, on lease →</div>
+          </a>
+        </div>
+
+        <div class="order-notice-banner">
+          <div class="onb-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="onb-text">
+            <strong>Cars are imported to order. They are not held in stock in Romania.</strong>
+            Prices include transport from the source country platform to your address where applicable. We deliver anywhere in Romania.
+          </div>
+          <a href="contact.html" class="onb-cta">Order now</a>
+        </div>
+
+        <p class="reveal" style="margin:16px 0 24px;color:var(--fg-faint);font-size:13px;line-height:1.6;max-width:760px">ADN Cars started from frustration. Dealers try to sell you what they have on the lot, not what you actually want. So we built a fully digital acquisition process, with leasing payment options, where you're guided step by step.</p>
+
+        <!-- Search -->
+        <div class="stoc-search-bar">
+          <div class="stoc-search-wrap">
+            <svg class="stoc-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="stoc-search-input" id="stoc-q" type="text" placeholder="Search by brand, model, year, fuel type..." aria-label="Search cars" />
+            <button class="stoc-search-clear" id="stoc-q-clear" style="display:none" aria-label="Clear search">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <span class="stoc-search-count" id="stoc-count"></span>
+        </div>
+
+        <!-- Mobile bar -->
+        <div class="stoc-mobile-bar">
+          <span class="count"><strong id="stoc-count-m">0</strong> results</span>
+          <div class="stoc-mobile-actions">
+            <select class="sort-select" id="sort-select-m">
+              <option value="newest">Newest first</option>
+              <option value="priceAsc">Price: low to high</option>
+              <option value="priceDesc">Price: high to low</option>
+              <option value="kmAsc">Lowest mileage</option>
+            </select>
+            <button class="btn btn-sm stoc-filter-btn" id="filter-open-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+              Filters
+            </button>
+          </div>
+        </div>
+
+        <div class="inventory-layout">
+          <aside class="filter-panel" id="filter-panel">
+            <div class="filter-panel-head">
+              <span>Filters</span>
+              <button class="filter-close-btn" id="filter-close-btn" aria-label="Close filters">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="filter-section"><h6>Brand</h6><div class="chip-row" id="chips-brand"></div></div>
+            <div class="filter-section"><h6>Body type</h6><div class="chip-row" id="chips-body"></div></div>
+            <div class="filter-section"><h6>Fuel</h6><div class="chip-row" id="chips-fuel"></div></div>
+            <div class="filter-section"><h6>Gearbox</h6><div class="chip-row" id="chips-gear"></div></div>
+            <div class="filter-section">
+              <h6>Year</h6>
+              <div class="range-row">
+                <input type="number" id="yr-min" placeholder="From" min="2015" max="2025" />
+                <input type="number" id="yr-max" placeholder="To" min="2015" max="2025" />
+              </div>
+            </div>
+            <div class="filter-section">
+              <h6>Price (EUR)</h6>
+              <div class="range-row">
+                <input type="number" id="p-min" placeholder="From" min="0" />
+                <input type="number" id="p-max" placeholder="To" max="200000" />
+              </div>
+            </div>
+            <div class="filter-section">
+              <h6>Max mileage (km)</h6>
+              <div class="range-row"><input type="number" id="km-max" placeholder="Max km" /></div>
+            </div>
+            <div class="filter-section">
+              <h6>Battery condition (%)</h6>
+              <p style="margin:0 0 8px;font-size:11px;color:var(--fg-muted)">Electric &amp; hybrid</p>
+              <div class="range-row">
+                <input type="number" id="bat-min" placeholder="Min %" min="0" max="100" />
+                <input type="number" id="bat-max" placeholder="Max %" min="0" max="100" />
+              </div>
+            </div>
+            <div class="filter-section">
+              <h6>Battery range (km)</h6>
+              <p style="margin:0 0 8px;font-size:11px;color:var(--fg-muted)">Electric &amp; hybrid</p>
+              <div class="range-row">
+                <input type="number" id="range-min" placeholder="Min km" min="0" />
+                <input type="number" id="range-max" placeholder="Max km" />
+              </div>
+            </div>
+            <div class="filter-section">
+              <h6>Equipment</h6>
+              <div class="chip-row">
+                <button class="chip" id="chip-isofix" data-val="isofix">Isofix</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-direction:column">
+              <button class="btn btn-primary btn-sm" id="apply-filters-btn">Apply filters</button>
+              <button class="btn btn-ghost btn-sm" id="clear-filters-btn">Reset</button>
+            </div>
+          </aside>
+          <div id="filter-overlay" class="filter-overlay" style="display:none"></div>
+
+          <div>
+            <div class="toolbar">
+              <span class="count"><strong id="stoc-count-d">0</strong> results</span>
+              <div class="toolbar-right">
+                <select class="sort-select" id="sort-select-d">
+                  <option value="newest">Newest first</option>
+                  <option value="priceAsc">Price: low to high</option>
+                  <option value="priceDesc">Price: high to low</option>
+                  <option value="kmAsc">Lowest mileage</option>
+                </select>
+              </div>
+            </div>
+            <div class="car-grid" id="stoc-grid"></div>
+            <div id="stoc-empty" style="display:none;padding:40px;text-align:center;color:var(--fg-muted)">
+              <p>No results for the selected filters.</p>
+              <button class="btn btn-ghost btn-sm" id="clear-filters-empty" style="margin-top:12px">Reset filters</button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <div id="footer-root"></div>
+
+  <a class="wa-float" href="https://wa.me/40740123456?text=Hello!%20I'm%20interested%20in%20a%20car%20from%20ADN%20Cars." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </a>
+
+  <script src="../config.js?v=20260620"></script>
+  <script src="../data.js?v=20260620"></script>
+  <script src="../nav.js?v=20260617d"></script>
+  <script src="../footer.js?v=20260617"></script>
+  <script>
+  (function() {
+    const fmtP = n => new Intl.NumberFormat('en-GB', {maximumFractionDigits:0}).format(n);
+    const fmtK = n => new Intl.NumberFormat('en-GB').format(n);
+    const FUELS = {diesel:'Diesel',petrol:'Petrol',hybrid:'Hybrid',phev:'Plug-in',electric:'Electric'};
+    const BODIES = {sedan:'Sedan',suv:'SUV',coupe:'Coupé',estate:'Estate',hatch:'Hatchback'};
+    const GEARS = {auto:'Automatic',manual:'Manual'};
+
+    const SVG_CAL = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+    const SVG_RD  = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19l3-14h2"/><path d="M20 19l-3-14h-2"/><path d="M11 5v2"/><path d="M11 11v2"/><path d="M11 17v2"/></svg>`;
+    const SVG_FL  = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="15" y2="22"/><line x1="4" y1="9" x2="14" y2="9"/><path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2v0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"/></svg>`;
+    const SVG_GG  = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M4 5l2 2"/><path d="M20 5l-2 2"/></svg>`;
+    const SVG_HEART = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+    const SVG_BOLT = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+    const SVG_ARROW = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+
+    function carCardHTML(car) {
+      const badge = car.badge ? `<span class="badge badge-accent">${car.badge}</span>` : '';
+      const ev = car.fuel === 'electric' ? `<span class="badge badge-dark">${SVG_BOLT} EV</span>` : '';
+      return `<a class="car-card" href="auto.html?id=${car.id}">
+        <div class="photo" style="background-image:url(${car.photos[0]})">
+          <div class="badges">${badge}${ev}</div>
+          <button class="save" aria-label="Save">${SVG_HEART}</button>
+          <div class="price-tag">€ ${fmtP(car.price)}</div>
+        </div>
+        <div class="body">
+          <div><h3 class="title">${car.brand} ${car.model}</h3><p class="sub">${car.variant} · ${car.color}</p></div>
+          <div class="specs">
+            <span class="s">${SVG_CAL} ${car.year}</span>
+            <span class="s">${SVG_RD} ${fmtK(car.km)} km</span>
+            <span class="s">${SVG_FL} ${FUELS[car.fuel]||car.fuel}</span>
+            <span class="s">${SVG_GG} ${car.hp} hp</span>
+          </div>
+          <div class="card-cta-row">
+            ${car.leasing ? `<span class="card-leasing-hint">Leasing from <strong>€ ${fmtP(car.leasing)}</strong>/month</span>` : '<span></span>'}
+            <span class="card-btn btn-pill">View offer ${SVG_ARROW}</span>
+          </div>
+        </div>
+      </a>`;
+    }
+
+    let activeBrands = new Set(), activeBodies = new Set(), activeFuels = new Set(), activeGears = new Set();
+    let activeIsofix = false;
+    let sortBy = 'newest';
+    const inv = (window.INVENTORY || []).filter(c => c.status !== 'sold');
+    const statCount = document.getElementById('stoc-stat-count');
+    if (statCount) statCount.textContent = inv.length;
+    const BRANDS = [...new Set(inv.map(c => c.brand))];
+    const BODIES_ARR = [...new Set(inv.map(c => c.body).filter(Boolean))];
+
+    function buildChips(container, items, activeSet, labelFn) {
+      container.innerHTML = items.map(v =>
+        `<button class="chip${activeSet.has(v) ? ' active' : ''}" data-val="${v}">${labelFn ? labelFn(v) : v}</button>`
+      ).join('');
+      container.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = btn.dataset.val;
+          activeSet.has(val) ? activeSet.delete(val) : activeSet.add(val);
+          btn.classList.toggle('active');
+          render();
+        });
+      });
+    }
+
+    buildChips(document.getElementById('chips-brand'), BRANDS, activeBrands);
+    buildChips(document.getElementById('chips-body'), BODIES_ARR, activeBodies, v => BODIES[v]||v);
+    buildChips(document.getElementById('chips-fuel'), ['diesel','petrol','hybrid','phev','electric'].filter(f => inv.some(c => c.fuel === f)), activeFuels, v => FUELS[v]||v);
+    buildChips(document.getElementById('chips-gear'), ['auto','manual'].filter(g => inv.some(c => c.gear === g)), activeGears, v => GEARS[v]||v);
+
+    function getFiltered() {
+      const q = document.getElementById('stoc-q').value.trim().toLowerCase();
+      const yrMin = parseInt(document.getElementById('yr-min').value) || 0;
+      const yrMax = parseInt(document.getElementById('yr-max').value) || 9999;
+      const pMin = parseInt(document.getElementById('p-min').value) || 0;
+      const pMax = parseInt(document.getElementById('p-max').value) || 9999999;
+      const kmMax = parseInt(document.getElementById('km-max').value) || 9999999;
+      const batMinVal = parseInt(document.getElementById('bat-min').value);
+      const batMaxVal = parseInt(document.getElementById('bat-max').value);
+      const rangeMinVal = parseInt(document.getElementById('range-min').value);
+      const rangeMaxVal = parseInt(document.getElementById('range-max').value);
+      let r = inv.filter(c => {
+        if (q && !`${c.brand} ${c.model} ${c.variant||''} ${c.year} ${c.fuel||''}`.toLowerCase().includes(q)) return false;
+        if (activeBrands.size && !activeBrands.has(c.brand)) return false;
+        if (activeBodies.size && !activeBodies.has(c.body)) return false;
+        if (activeFuels.size && !activeFuels.has(c.fuel)) return false;
+        if (activeGears.size && !activeGears.has(c.gear)) return false;
+        if (c.year < yrMin || c.year > yrMax) return false;
+        if (c.price < pMin || c.price > pMax) return false;
+        if (c.km > kmMax) return false;
+        if (!isNaN(batMinVal) && batMinVal > 0) { if (c.batteryPct == null || c.batteryPct < batMinVal) return false; }
+        if (!isNaN(batMaxVal) && batMaxVal > 0) { if (c.batteryPct == null || c.batteryPct > batMaxVal) return false; }
+        if (!isNaN(rangeMinVal) && rangeMinVal > 0) { if (c.batteryRange == null || c.batteryRange < rangeMinVal) return false; }
+        if (!isNaN(rangeMaxVal) && rangeMaxVal > 0) { if (c.batteryRange == null || c.batteryRange > rangeMaxVal) return false; }
+        if (activeIsofix && !c.isofix) return false;
+        return true;
+      });
+      if (sortBy === 'newest') r.sort((a,b) => b.year - a.year);
+      if (sortBy === 'priceAsc') r.sort((a,b) => a.price - b.price);
+      if (sortBy === 'priceDesc') r.sort((a,b) => b.price - a.price);
+      if (sortBy === 'kmAsc') r.sort((a,b) => a.km - b.km);
+      return r;
+    }
+
+    function render() {
+      const list = getFiltered();
+      const n = list.length;
+      const q = document.getElementById('stoc-q').value.trim();
+      document.getElementById('stoc-count-d').textContent = n;
+      document.getElementById('stoc-count-m').textContent = n;
+      const cs = document.getElementById('stoc-count');
+      if (cs) { cs.textContent = `${n} result${n !== 1 ? 's' : ''}`; cs.className = 'stoc-search-count' + (q ? ' visible' : ''); }
+      const grid = document.getElementById('stoc-grid');
+      const empty = document.getElementById('stoc-empty');
+      if (n === 0) { grid.innerHTML = ''; empty.style.display = 'block'; }
+      else { grid.innerHTML = list.map(carCardHTML).join(''); empty.style.display = 'none'; }
+    }
+
+    document.getElementById('stoc-q').addEventListener('input', e => {
+      document.getElementById('stoc-q-clear').style.display = e.target.value ? 'flex' : 'none';
+      render();
+    });
+    document.getElementById('stoc-q-clear').addEventListener('click', () => {
+      document.getElementById('stoc-q').value = '';
+      document.getElementById('stoc-q-clear').style.display = 'none';
+      render();
+    });
+    ['yr-min','yr-max','p-min','p-max','km-max','bat-min','bat-max','range-min','range-max'].forEach(id => document.getElementById(id)?.addEventListener('change', render));
+    document.getElementById('chip-isofix')?.addEventListener('click', function() { activeIsofix = !activeIsofix; this.classList.toggle('active', activeIsofix); render(); });
+    ['sort-select-d','sort-select-m'].forEach(id => document.getElementById(id)?.addEventListener('change', e => { sortBy = e.target.value; document.getElementById('sort-select-d').value = sortBy; document.getElementById('sort-select-m').value = sortBy; render(); }));
+    document.getElementById('apply-filters-btn')?.addEventListener('click', () => { render(); closePanel(); });
+    function clearAll() { activeBrands.clear(); activeBodies.clear(); activeFuels.clear(); activeGears.clear(); activeIsofix = false; document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); ['yr-min','yr-max','p-min','p-max','km-max','bat-min','bat-max','range-min','range-max'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; }); render(); }
+    document.getElementById('clear-filters-btn')?.addEventListener('click', clearAll);
+    document.getElementById('clear-filters-empty')?.addEventListener('click', clearAll);
+    function openPanel() { document.getElementById('filter-panel').classList.add('mobile-open'); document.getElementById('filter-overlay').style.display='block'; document.body.style.overflow='hidden'; }
+    function closePanel() { document.getElementById('filter-panel').classList.remove('mobile-open'); document.getElementById('filter-overlay').style.display='none'; document.body.style.overflow=''; }
+    document.getElementById('filter-open-btn')?.addEventListener('click', openPanel);
+    document.getElementById('filter-close-btn')?.addEventListener('click', closePanel);
+    document.getElementById('filter-overlay')?.addEventListener('click', closePanel);
+    render();
+  })();
+  </script>
+</body>
+</html>

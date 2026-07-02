@@ -1,0 +1,59 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/*.html"
+  to = "/:splat"
+  status = 301
+  force = false
+
+[[redirects]]
+  from = "/en/*.html"
+  to = "/en/:splat"
+  status = 301
+  force = false
+
+# Păstrează URL-ul indexat de SEO pentru pagina de leasing (denumirea afișată s-a schimbat în "Leasing Startup-uri")
+[[redirects]]
+  from = "/leasing-pentru-firme-nou-infiintate/"
+  to = "/leasing"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/leasing-pentru-firme-nou-infiintate"
+  to = "/leasing"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, no-cache, must-revalidate"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
